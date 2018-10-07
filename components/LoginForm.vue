@@ -8,13 +8,13 @@
           v-model="formEmail"
           label="E-mail"
           required
-        ></v-text-field>
+        />
         <v-text-field
           v-model="formPassword"
           type="password"
           label="Password"
           required
-        ></v-text-field>
+        />
       </v-form>
 
       <v-btn class="signIn mb-2" primary @click.native="emailLogin">Log in</v-btn>
@@ -29,7 +29,7 @@ export default {
     return {
       valid: false,
       formEmail: '',
-      formPassword: '',
+      formPassword: ''
     }
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
       this.$store
         .dispatch('signInWithEmail', {
           email: this.formEmail,
-          password: this.formPassword,
+          password: this.formPassword
         })
         .then(() => {
           this.formEmail = ''
@@ -51,7 +51,7 @@ export default {
       this.$store
         .dispatch('signUpWithEmail', {
           email: this.formEmail,
-          password: this.formPassword,
+          password: this.formPassword
         })
         .then(() => {
           this.formEmail = ''
@@ -60,8 +60,8 @@ export default {
         .catch(e => {
           console.log(e.message)
         })
-    },
-  },
+    }
+  }
 }
 </script>
 

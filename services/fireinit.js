@@ -8,10 +8,10 @@ var config = {
   databaseURL: 'https://caramelldansen-dev.firebaseio.com',
   projectId: 'caramelldansen-dev',
   storageBucket: 'caramelldansen-dev.appspot.com',
-  messagingSenderId: '968816654149',
+  messagingSenderId: '968816654149'
 }
 
-!firebase.apps.length ? firebase.initializeApp(config) : ''
+if (!firebase.apps.length) firebase.initializeApp(config)
 export const GoogleProvider = new firebase.auth.GoogleAuthProvider()
 export const auth = firebase.auth()
 export const DB = firebase.database()
