@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import firebase, { auth, GoogleProvider } from '@/services/fireinit.js'
+import { auth } from '@/services/fireinit.js'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -22,7 +22,6 @@ const createStore = () => {
           auth
             .signInWithEmailAndPassword(email, password)
             .then(user => {
-              console.log(user)
               auth.currentUser
                 .getIdToken()
                 .then(idToken => {

@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-flex text-xs-center xs12 sm6 offset-sm3>
-      <h2 class="title">Login with Email</h2>
+      <h2 class="title">Sign Up with Email</h2>
 
       <v-form v-model="valid">
         <v-text-field
@@ -20,9 +20,9 @@
       <v-btn
         class="signIn mb-2"
         primary
-        @click.native="emailLogin"
+        @click.native="emailSignup"
       >
-        Log in
+        Sign Up With Email
       </v-btn>
     </v-flex>
   </v-layout>
@@ -38,9 +38,9 @@ export default {
     }
   },
   methods: {
-    emailLogin () {
+    emailSignup () {
       this.$store
-        .dispatch('signInWithEmail', {
+        .dispatch('signUpWithEmail', {
           email: this.formEmail,
           password: this.formPassword
         })
