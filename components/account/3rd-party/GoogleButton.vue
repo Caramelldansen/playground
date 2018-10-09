@@ -13,7 +13,9 @@ export default {
   },
   methods: {
     GoogleButton () {
-      this.$store.dispatch('userGoogleLogin')
+      this.$store.dispatch('userGoogleLogin').then(() => {
+        location.reload()
+      })
     }
   }
 }

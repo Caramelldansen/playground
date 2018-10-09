@@ -35,23 +35,27 @@ const createStore = () => {
           })
       },
       userGoogleLogin ({ commit }) {
-        auth.useDeviceLanguage()
-        const provider = new firebase.auth.GoogleAuthProvider()
-        provider.addScope('https://www.googleapis.com/auth/plus.login')
-        provider.setCustomParameters({
-          'login_hint': 'user@example.com'
-        })
-        return auth
-          .signInWithPopup(provider)
-          .then((result) => {
+        return new Promise((resolve, reject) => {
+          auth.useDeviceLanguage()
+          const provider = new firebase.auth.GoogleAuthProvider()
+          provider.addScope('https://www.googleapis.com/auth/plus.login')
+          provider.setCustomParameters({
+            'login_hint': 'user@example.com'
+          })
+
+          auth
+            .signInWithPopup(provider)
+            .then((result) => {
             // createNewAccount({
             //   newImage: result.additionalUserInfo.profile.picture, // just use their existing user image to start
             //   ...result.user
             // })
-            return commit('setUser', result.user)
-          }).catch((error) => {
-            console.log(error)
-          })
+              commit('setUser', result.user)
+              resolve()
+            }).catch((error) => {
+              console.log(error)
+            })
+        })
       },
       // userGithubLogin ({ commit }) {
       //   auth.useDeviceLanguage()
