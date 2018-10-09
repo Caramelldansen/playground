@@ -1,100 +1,85 @@
 <template>
-  <v-container>
-    <v-layout row>
-      <v-flex text-xs-center xs12 sm4 offset-sm4>
-        <h2 class="title">Login with Email</h2>
+  <div>
+    <form @submit.prevent="signup">
+      <div class="form-group">
+        <label>Email</label>
+        <div class="control">
+          <input :class="{ 'is-danger': invalidEmail }" v-model="email" class="form-control" type="email" placeholder="Account Email">
+        </div>
+        <p v-if="invalidEmail" class="error">This email is invalid</p>
+      </div>
 
-        <v-form v-model="valid">
-          <v-text-field
-            v-model="formEmail"
-            label="E-mail"
-            required
-          />
-          <v-text-field
-            v-model="formPassword"
-            type="password"
-            label="Password"
-            required
-          />
-        </v-form>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="control">
+          <input :class="{ 'is-danger': invalidPassword }" v-model="password" class="form-control" type="password" placeholder="Password">
+        </div>
+        <p v-if="invalidPassword" class="error">This password is invalid</p>
+      </div>
 
-        <v-btn
-          class="signIn mb-2"
-          primary
-          @click.native="emailLogin"
-        >
-          Log in
-        </v-btn>
-      </v-flex>
-    </v-layout>
+      <div class="form-group">
+        <p><nuxt-link to="/account/signup">I don't have an account</nuxt-link></p>
+      </div>
 
-    <v-layout row mt-5>
-      <v-flex row text-xs-center xs12 sm6 offset-sm3>
-        <v-btn
-          class="signIn mb-2"
-          primary
-          @click.native="googleLogin"
-        >
-          Log in with Google
-        </v-btn>
-        <v-btn
-          class="signIn mb-2"
-          primary
-          @click.native="facebookLogin"
-        >
-          Log in with Facebook
-        </v-btn>
-        <v-btn
-          class="signIn mb-2"
-          primary
-        >
-          <nuxt-link to="/signup">Go to Sign up</nuxt-link>
-        </v-btn>
-      </v-flex>
-    </v-layout>
-  </v-container>
+      <div class="form-group">
+        <div v-if="formError.length > 0" class="flash flash-error" v-text="formError"/>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Log In</button>
+      </div>
+
+      <div class="form-actions mt-2">
+        <GoogleButton label="Sign In With Google" />
+      </div>
+
+      <div class="form-actions mt-2">
+        <GithubButton label="Sign In With Github" />
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
+import GoogleButton from '~/components/account/3rd-party/GoogleButton.vue'
+import GithubButton from '~/components/account/3rd-party/GithubButton.vue'
+
 export default {
+  name: 'LoginForm',
+  components: {
+    GoogleButton,
+    GithubButton
+  },
   data () {
     return {
-      valid: false,
-      formEmail: '',
-      formPassword: ''
+      email: '',
+      password: '',
+      formError: ''
+    }
+  },
+  computed: {
+    invalidEmail () {
+      return false // !this.email.includes('@')
+    },
+    invalidPassword () {
+      return false // !this.password.length > 12
     }
   },
   methods: {
-    emailLogin () {
-      this.$store
-        .dispatch('signInWithEmail', {
-          email: this.formEmail,
-          password: this.formPassword
-        })
+    signup () {
+      this.formError = ''
+      this.$store.dispatch('userLogin', {
+        email: this.email,
+        password: this.password
+      })
         .then(() => {
-          this.formEmail = ''
-          this.formPassword = ''
+          this.$router.push('/account')
         })
-        .catch(error => {
-          console.log(error.message)
+        .catch((error) => {
+          console.log(error)
+          this.formError = error.message
         })
-    },
-    googleLogin () {
-      this.$store.dispatch('loginWithGoogle').then(() => {
-        location.reload()
-      })
-    },
-    facebookLogin () {
-      this.$store.dispatch('loginWithFacebook').then(() => {
-        location.reload()
-      })
     }
   }
 }
 </script>
-
-<style lang="css">
-.signIn {
-
-}
-</style>

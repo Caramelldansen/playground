@@ -1,7 +1,5 @@
-import { auth } from '@/services/fireinit.js'
-
-export default function ({ isServer, store, redirect }) {
-  if (!isServer && (store.getters.isAuthenticated && auth.currentUser)) {
+export default function ({ store, redirect }) {
+  if (store.getters.isAuthenticated) {
     return redirect('/account')
   }
 }

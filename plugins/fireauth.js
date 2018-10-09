@@ -1,7 +1,8 @@
 import { auth } from '@/services/fireinit.js'
+import { setToken } from '~/utils/auth'
 
 export default context => {
-  const { store } = context
+  // const { store } = context
 
   return new Promise((resolve, reject) => {
     auth.onAuthStateChanged(user => {
@@ -9,7 +10,7 @@ export default context => {
         user
           .getIdToken()
           .then((idToken) => {
-            store.commit('setToken', idToken)
+            setToken(idToken)
           })
       }
       resolve()

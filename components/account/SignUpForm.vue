@@ -1,69 +1,92 @@
 <template>
-  <v-layout>
-    <v-flex text-xs-center xs12 sm6 offset-sm3>
-      <h2 class="title">Sign Up with Email</h2>
+  <div>
+    <form @submit.prevent="signup">
+      <div class="form-group">
+        <label>Email</label>
+        <div class="control">
+          <input :class="{ 'is-danger': invalidEmail }" v-model="email" class="form-control" type="email" placeholder="New Account Email">
+        </div>
+        <p v-if="invalidEmail" class="help is-danger">This email is invalid</p>
+      </div>
 
-      <v-form v-model="valid">
-        <v-text-field
-          v-model="formEmail"
-          label="E-mail"
-          required
-        />
-        <v-text-field
-          v-model="formPassword"
-          type="password"
-          label="Password"
-          required
-        />
-      </v-form>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="control">
+          <input :class="{ 'is-danger': invalidPassword }" v-model="password" class="form-control" type="password" placeholder="New Account Password">
+        </div>
+        <p v-if="invalidPassword" class="help is-danger">This password is invalid</p>
+      </div>
 
-      <v-btn
-        class="signIn mb-2"
-        primary
-        @click.native="emailSignup"
-      >
-        Sign Up With Email
-      </v-btn>
-      <v-btn
-        class="signIn mb-2"
-        primary
-      >
-        <nuxt-link to="/login">Go to Log in</nuxt-link>
-      </v-btn>
-    </v-flex>
-  </v-layout>
+      <div class="form-checkbox">
+        <label>
+          <input type="checkbox" name="terms">
+          <span>I accept the terms and conditions</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <p><nuxt-link to="/account/login">I already have an account</nuxt-link></p>
+      </div>
+
+      <div class="form-group">
+        <div v-if="formError.length > 0" class="flash flash-error" v-text="formError"/>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </div>
+
+      <div class="form-actions mt-2">
+        <GoogleButton label="Sign Up With Google" />
+      </div>
+
+      <div class="form-actions mt-2">
+        <GithubButton label="Sign Up With Github" />
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
+import GoogleButton from '~/components/account/3rd-party/GoogleButton.vue'
+import GithubButton from '~/components/account/3rd-party/GithubButton.vue'
+
 export default {
+  name: 'SignupForm',
+  components: {
+    GoogleButton,
+    GithubButton
+  },
   data () {
     return {
-      valid: false,
-      formEmail: '',
-      formPassword: ''
+      email: '',
+      password: '',
+      formError: ''
+    }
+  },
+  computed: {
+    invalidEmail () {
+      return false // !this.email.includes('@')
+    },
+    invalidPassword () {
+      return false // !this.password.length > 12
     }
   },
   methods: {
-    emailSignup () {
-      this.$store
-        .dispatch('signUpWithEmail', {
-          email: this.formEmail,
-          password: this.formPassword
-        })
+    signup () {
+      this.formError = ''
+      this.$store.dispatch('userCreate', {
+        email: this.email,
+        password: this.password
+      })
         .then(() => {
-          this.formEmail = ''
-          this.formPassword = ''
+          this.$router.push('/account')
         })
-        .catch(e => {
-          console.log(e.message)
+        .catch((error) => {
+          console.log(error)
+          this.formError = error.message
         })
     }
   }
 }
 </script>
-
-<style lang="css">
-.signIn {
-
-}
-</style>

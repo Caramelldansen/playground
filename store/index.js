@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import firebase from 'firebase'
 import { auth } from '@/services/fireinit.js'
+import { unsetToken } from '~/utils/auth'
 // import { firebaseMutations, firebaseAction } from 'vuexfire'
 
 // function createNewAccount (user) {
@@ -26,9 +27,6 @@ const createStore = () => {
       // setAccountRef: firebaseAction(({ bindFirebaseRef }, path) => {
       //   return bindFirebaseRef('account', firebase.database().ref(path))
       // }),
-      resetUser ({ state }) {
-        state.user = null
-      },
       userCreate ({ state }, account) {
         return auth
           .createUserWithEmailAndPassword(account.email, account.password)
@@ -71,18 +69,21 @@ const createStore = () => {
       //       console.log(error)
       //     })
       // },
-      userLogin ({ state }, account) {
+      userLogin ({ commit }, account) {
         return auth
           .signInWithEmailAndPassword(account.email, account.password)
           .then((user) => {
-            return this.dispatch('setUser', user)
+            return commit('setUser', user)
           })
       },
-      userLogout ({ state }) {
+      userLogout ({ commit }) {
+        console.log('logout')
         return auth
           .signOut()
           .then(() => {
-            this.dispatch('resetUser')
+            console.log('logout then')
+            unsetToken()
+            commit('resetUser')
           })
       }
       // userUpdate ({ state }, newData) {
@@ -101,6 +102,9 @@ const createStore = () => {
       setUser (state, user) {
         state.user = user
         // return this.dispatch('setAccountRef', `accounts/${state.user.uid}`)
+      },
+      resetUser (state) {
+        state.user = null
       }
     }
   })

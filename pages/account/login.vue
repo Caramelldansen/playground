@@ -35,9 +35,10 @@ export default {
   watch: {
     // firebase is sometimes slow so we need to account for
     // the user getting authenticated late in the game...
-    user (to, from) {
-      this.$router.push('/account')
-    }
+    // user (val) {
+    //   console.log(val)
+    //   this.$router.push('/account')
+    // }
   }
 }
 </script>
