@@ -5,7 +5,13 @@ export default context => {
 
   return new Promise((resolve, reject) => {
     auth.onAuthStateChanged(user => {
-      store.commit('setUser', user)
+      if (user) {
+        user
+          .getIdToken()
+          .then((idToken) => {
+            store.commit('setToken', idToken)
+          })
+      }
       resolve()
     })
   })

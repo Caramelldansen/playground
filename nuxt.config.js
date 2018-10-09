@@ -1,5 +1,3 @@
-const pkg = require('./package')
-
 module.exports = {
   mode: 'universal',
 
@@ -7,13 +5,19 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: 'Caramelldansen',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: 'My Firebase Authentication Playground' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href: '/primer.css'
+      }]
   },
 
   /*
@@ -25,22 +29,25 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    { src: '~/assets/css/main.css', lang: 'css' },
-    { src: '~/assets/css/app.styl', lang: 'styl' }
+    '~/assets/css/style.css'
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/plugins/fireauth.js'],
+  plugins: [
+    {
+      src: '~/plugins/fireauth.js',
+      ssr: false
+    }
+  ],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/axios'
   ],
   /*
   ** Axios module configuration

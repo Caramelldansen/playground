@@ -1,53 +1,40 @@
 <template>
-  <div>
+  <div class="container">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="flex-table">
+        <div class="flex-table-item flex-table-item-primary">
+          <nuxt-link class="navbar-item" to="/"><strong>Home</strong></nuxt-link>
+        </div>
+        <div v-cloak class="flex-table-item text-right">
+          <nuxt-link v-if="user" class="navbar-item" to="/account" v-text="user.email"/>
+          <nuxt-link v-else class="navbar-item" to="/account/login">Login</nuxt-link>
+        </div>
+      </div>
+    </nav>
     <nuxt/>
   </div>
 </template>
 
-<style>
-html
-{
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  computed: mapState([
+    'user'
+  ])
 }
-*, *:before, *:after
-{
-  box-sizing: border-box;
-  margin: 0;
+</script>
+
+<style lang="css">
+.flex-table {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.button--green
-{
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
+.flex-table-item {
+  flex: 1;
 }
-.button--green:hover
-{
-  color: #fff;
-  background-color: #3b8070;
-}
-.button--grey
-{
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-.button--grey:hover
-{
-  color: #fff;
-  background-color: #35495e;
+.flex-table-item-primary {
+  flex: 3;
 }
 </style>
