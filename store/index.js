@@ -1,7 +1,5 @@
 import Vuex from 'vuex'
-import firebase from 'firebase'
-import { auth } from '@/services/fireinit.js'
-import { unsetToken } from '~/utils/auth'
+import { auth, GoogleProvider, FacebookProvider } from '@/services/fireinit.js'
 // import { firebaseMutations, firebaseAction } from 'vuexfire'
 
 // function createNewAccount (user) {
@@ -30,65 +28,36 @@ const createStore = () => {
       userCreate ({ state }, account) {
         return auth
           .createUserWithEmailAndPassword(account.email, account.password)
-          .then((user) => {
-            // return createNewAccount(user)
+          .then(result => {
+            result.user.getIdToken().then((idToken) => {
+              console.log(idToken)
+            })
           })
+      },
+      userLogin ({ commit }, account) {
+        return auth.signInWithEmailAndPassword(account.email, account.password)
       },
       userGoogleLogin ({ commit }) {
-        return new Promise((resolve, reject) => {
-          auth.useDeviceLanguage()
-          const provider = new firebase.auth.GoogleAuthProvider()
-          provider.addScope('https://www.googleapis.com/auth/plus.login')
-          provider.setCustomParameters({
-            'login_hint': 'user@example.com'
-          })
-
-          auth
-            .signInWithPopup(provider)
-            .then((result) => {
-            // createNewAccount({
-            //   newImage: result.additionalUserInfo.profile.picture, // just use their existing user image to start
-            //   ...result.user
-            // })
-              commit('setUser', result.user)
-              resolve()
-            }).catch((error) => {
-              console.log(error)
-            })
+        auth.useDeviceLanguage()
+        GoogleProvider.addScope('https://www.googleapis.com/auth/plus.login')
+        GoogleProvider.setCustomParameters({
+          'login_hint': 'user@example.com'
         })
-      },
-      // userGithubLogin ({ commit }) {
-      //   auth.useDeviceLanguage()
-      //   const provider = new firebase.auth.GithubAuthProvider()
-      //   provider.addScope('user:email')
-      //   return auth
-      //     .signInWithPopup(provider)
-      //     .then((result) => {
-      //       createNewAccount({
-      //         newImage: result.additionalUserInfo.profile.avatar_url, // just use their existing user image to start
-      //         ...result.user
-      //       })
-      //       return commit('setUser', result.user)
-      //     }).catch((error) => {
-      //       console.log(error)
-      //     })
-      // },
-      userLogin ({ commit }, account) {
+
         return auth
-          .signInWithEmailAndPassword(account.email, account.password)
-          .then((user) => {
-            return commit('setUser', user)
-          })
+          .signInWithPopup(GoogleProvider)
+          .catch(error => console.log(error))
+      },
+      userFacebookLogin ({ commit }) {
+        auth.useDeviceLanguage()
+        GoogleProvider.addScope('user_birthday')
+
+        return auth
+          .signInWithPopup(FacebookProvider)
+          .catch(error => console.log(error))
       },
       userLogout ({ commit }) {
-        console.log('logout')
-        return auth
-          .signOut()
-          .then(() => {
-            console.log('logout then')
-            unsetToken()
-            commit('resetUser')
-          })
+        return auth.signOut()
       }
       // userUpdate ({ state }, newData) {
       //   return firebase.database().ref(`accounts/${state.user.uid}`).update({

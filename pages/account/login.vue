@@ -1,23 +1,23 @@
 <template>
-  <div>
-    <div class="columns">
-      <div class="one-half column centered">
-        <div class="hero">
-          <div class="hero-body">
-            <h1 class="title">nuxt firebase auth</h1>
-            <h2 class="subtitle">Login to nuxt firebase auth to manage your account</h2>
+  <v-layout>
+    <v-flex xs12 sm8 offset-sm2>
+      <div class="columns">
+        <div class="one-half column centered">
+          <div class="hero">
+            <div class="hero-body">
+              <h1 class="title">Authentication v1</h1>
+              <h2 class="subtitle">Login to the application</h2>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="columns">
-      <div class="one-half column centered">
-        <div class="four-fifths">
+      <div class="columns">
+        <div class="one-half column centered">
           <LoginForm />
         </div>
       </div>
-    </div>
-  </div>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

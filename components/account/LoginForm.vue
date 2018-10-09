@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="signup">
+    <form @submit.prevent="login">
       <div class="form-group">
         <label>Email</label>
         <div class="control">
@@ -34,7 +34,7 @@
       </div>
 
       <div class="form-actions mt-2">
-        <GithubButton label="Sign In With Github" />
+        <FacebookButton label="Sign In With Facebook" />
       </div>
     </form>
   </div>
@@ -42,13 +42,13 @@
 
 <script>
 import GoogleButton from '~/components/account/3rd-party/GoogleButton.vue'
-import GithubButton from '~/components/account/3rd-party/GithubButton.vue'
+import FacebookButton from '~/components/account/3rd-party/FacebookButton.vue'
 
 export default {
   name: 'LoginForm',
   components: {
     GoogleButton,
-    GithubButton
+    FacebookButton
   },
   data () {
     return {
@@ -66,12 +66,13 @@ export default {
     }
   },
   methods: {
-    signup () {
+    login () {
       this.formError = ''
-      this.$store.dispatch('userLogin', {
-        email: this.email,
-        password: this.password
-      })
+      this.$store
+        .dispatch('userLogin', {
+          email: this.email,
+          password: this.password
+        })
         .then(() => {
           this.$router.push('/account')
         })

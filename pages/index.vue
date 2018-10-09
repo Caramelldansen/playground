@@ -1,19 +1,7 @@
 <template>
-  <div>
-    <div class="columns is-centered">
-      <div class="column is-one-third">
-        <div class="hero">
-          <div class="hero-body">
-            <h1 class="title">nuxt firebase auth</h1>
-            <h2 class="subtitle">Sign up for nuxt firebase auth to start using the API</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="columns is-centered">
-      <div class="column is-one-third" />
-    </div>
-  </div>
+  <v-content>
+    <h1 class="text-xs-center">Home</h1>
+  </v-content>
 </template>
 
 <script>

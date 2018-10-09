@@ -1,19 +1,15 @@
 import { auth } from '@/services/fireinit.js'
-import { setToken } from '~/utils/auth'
+import { setToken, unsetToken } from '~/utils/auth'
 
-export default context => {
-  // const { store } = context
-
-  return new Promise((resolve, reject) => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        user
-          .getIdToken()
-          .then((idToken) => {
-            setToken(idToken)
-          })
-      }
-      resolve()
-    })
-  })
-}
+auth.onAuthStateChanged(user => {
+  console.log(user)
+  if (user) {
+    user
+      .getIdToken()
+      .then((idToken) => {
+        setToken(idToken)
+      })
+  } else {
+    unsetToken()
+  }
+})
