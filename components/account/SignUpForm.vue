@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     gameSuscriptionsAttributes () {
-      return this.selected.map(game => ({ 'game_id': game }))
+      return this.selected.map(game => ({ game_id: game }))
     },
     invalidUsername () {
       return false // !this.username.length > 12

@@ -28,7 +28,7 @@ const createStore = () => {
       userCreate ({ state }, account) {
         return auth
           .createUserWithEmailAndPassword(account.email, account.password)
-          .then(result => {
+          .then((result) => {
             result.user.getIdToken().then((idToken) => {
               console.log(idToken)
             })
@@ -41,7 +41,7 @@ const createStore = () => {
         auth.useDeviceLanguage()
         GoogleProvider.addScope('https://www.googleapis.com/auth/plus.login')
         GoogleProvider.setCustomParameters({
-          'login_hint': 'user@example.com'
+          login_hint: 'user@example.com'
         })
 
         return auth
