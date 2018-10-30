@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import SignupForm from '~/components/account/SignupForm.vue'
+import SignupForm from '~/components/account/SignUpForm.vue'
 
 export default {
   middleware: 'anonymous',
